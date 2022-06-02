@@ -10,7 +10,7 @@ const initialState: InitialStateType = {
 }
 
 const slice = createSlice({
-    name: "app",
+    name: 'app',
     initialState: initialState,
     reducers: {
         //этот редьюсер(()=>{}) создаст экшен(на основе его логики), который запустит setAppStatusAC
