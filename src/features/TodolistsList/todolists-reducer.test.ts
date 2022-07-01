@@ -23,7 +23,6 @@ beforeEach(() => {
 })
 
 test('correct todolist should be removed', () => {
-
     const action = removeTodolistAC({id: todolistId1})
 
     const endState = todolistsReducer(startState, action)
@@ -72,7 +71,6 @@ test('correct filter of todolist should be changed', () => {
 })
 
 test('todolists should be added', () => {
-
     const action = setTodolistsAC({todolists: startState})
 
     const endState = todolistsReducer([], action)
