@@ -1,29 +1,37 @@
 import React from 'react'
-import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField, Button, Grid} from '@material-ui/core'
 import {useFormik} from 'formik'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {loginTC} from './auth-reducer'
-import {AppRootStateType} from '../../app/store'
-import { Redirect } from 'react-router-dom'
+import {RootState} from '../../app/store'
+import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Paper, TextField} from "@mui/material";
+import './Login.css';
+import {Navigate} from "react-router-dom";
+import {useAppDispatch} from "../../hooks/redux-hooks";
+
+
+interface ILoginSchema {
+    email: string,
+    password: string,
+    rememberMe: boolean
+}
 
 export const Login = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
+    const isLoggedIn = useSelector<RootState, boolean>(state => state.auth.isLoggedIn);
 
-    const formik = useFormik({
+    const {values, errors, touched, handleSubmit, isValid, getFieldProps} = useFormik({
         validate: (values) => {
+            const errors = {} as ILoginSchema;
+
             if (!values.email) {
-                return {
-                    email: 'Email is required'
-                }
+                errors.email = 'email is required *';
             }
             if (!values.password) {
-                return {
-                    password: 'Password is required'
-                }
+                errors.password = 'password is required *'
             }
 
+            return errors;
         },
         initialValues: {
             email: '',
@@ -36,53 +44,68 @@ export const Login = () => {
     })
 
     if (isLoggedIn) {
-        return <Redirect to={"/"} />
+        return <Navigate to={"/"}/>
     }
 
-
-    return <Grid container justify="center">
-        <Grid item xs={4}>
-            <form onSubmit={formik.handleSubmit}>
-                <FormControl>
-                    <FormLabel>
-                        <p>
-                            To log in get registered <a href={'https://social-network.samuraijs.com/'}
-                                                        target={'_blank'}>here</a>
-                        </p>
-                        <p>
-                            or use common test account credentials:
-                        </p>
-                        <p> Email: free@samuraijs.com
-                        </p>
-                        <p>
-                            Password: free
-                        </p>
-                    </FormLabel>
-                    <FormGroup>
-                        <TextField
-                            label="Email"
-                            margin="normal"
-                            {...formik.getFieldProps("email")}
-                        />
-                        {formik.errors.email ? <div>{formik.errors.email}</div> : null}
-                        <TextField
-                            type="password"
-                            label="Password"
-                            margin="normal"
-                            {...formik.getFieldProps("password")}
-                        />
-                        {formik.errors.password ? <div>{formik.errors.password}</div> : null}
-                        <FormControlLabel
-                            label={'Remember me'}
-                            control={<Checkbox
-                                {...formik.getFieldProps("rememberMe")}
-                                checked={formik.values.rememberMe}
-                            />}
-                        />
-                        <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>
-                    </FormGroup>
-                </FormControl>
-            </form>
-        </Grid>
+    return <Grid container justifyContent="center" sx={{ mt: '8rem' }}>
+        <Paper elevation={2} sx={{
+            p: '2rem'
+        }}>
+            <Grid item xs={12}>
+                <form onSubmit={handleSubmit}>
+                    <FormControl>
+                        <FormLabel sx={{
+                            p: '1rem 0',
+                        }}>
+                            <div className="formHeader">
+                                <p>
+                                    To log in get registered
+                                    <a href={'https://social-network.samuraijs.com/'} target={'_blank'}>here</a>
+                                </p>
+                                <p>or use common test account credentials:</p>
+                            </div>
+                            <p>Email: free@samuraijs.com</p>
+                            <p>Password: free</p>
+                        </FormLabel>
+                        <FormGroup>
+                            <TextField
+                                variant="standard"
+                                label={errors.email && touched.email ? errors.email : 'email'}
+                                error={!!errors.email && !!touched.email}
+                                margin="normal"
+                                {...getFieldProps("email")}
+                            />
+                            <TextField
+                                type="password"
+                                variant="standard"
+                                label={errors.password && touched.password ? errors.password : 'password'}
+                                error={!!errors.password && !!touched.password}
+                                margin="normal"
+                                {...getFieldProps("password")}
+                            />
+                            <FormControlLabel
+                                label={'Remember me'}
+                                control={
+                                    <Checkbox
+                                        {...getFieldProps("rememberMe")}
+                                        checked={values.rememberMe}
+                                    />
+                                }
+                            />
+                            <Button type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={!isValid}
+                                    sx={{
+                                        mt: '1rem'
+                                    }}
+                            >
+                                Login
+                            </Button>
+                        </FormGroup>
+                    </FormControl>
+                </form>
+            </Grid>
+        </Paper>
     </Grid>
 }

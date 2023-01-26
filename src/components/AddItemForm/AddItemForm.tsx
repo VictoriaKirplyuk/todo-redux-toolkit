@@ -1,13 +1,13 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {IconButton, TextField} from '@material-ui/core';
-import {AddBox} from '@material-ui/icons';
+import {IconButton, TextField} from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
     disabled?: boolean
 }
 
-export const AddItemForm = React.memo(function({addItem, disabled = false}: AddItemFormPropsType) {
+export const AddItemForm = React.memo(function ({addItem, disabled = false}: AddItemFormPropsType) {
     console.log("AddItemForm called")
 
     let [title, setTitle] = useState("")
@@ -46,7 +46,7 @@ export const AddItemForm = React.memo(function({addItem, disabled = false}: AddI
                    helperText={error}
         />
         <IconButton color="primary" onClick={addItemHandler} disabled={disabled}>
-            <AddBox />
+            <AddIcon/>
         </IconButton>
     </div>
 })

@@ -82,7 +82,7 @@ const slice = createSlice({
             }
         })
         builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
-            return state.filter(tl => tl.id != action.payload.id)
+            return state.filter(tl => tl.id !== action.payload.id)
         })
         builder.addCase(addTodolistTC.fulfilled, (state, action) => {
             action.payload?.todolist

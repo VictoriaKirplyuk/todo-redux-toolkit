@@ -1,0 +1,9 @@
+.formHeader {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1rem
+}
+
+p a {
+    padding-left: 0.3rem;
+}

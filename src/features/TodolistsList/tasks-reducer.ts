@@ -8,7 +8,7 @@ import {
     UpdateTaskModelType
 } from '../../api/todolists-api'
 import {Dispatch} from 'redux'
-import {AppRootStateType} from '../../app/store'
+import {RootState} from '../../app/store'
 import {setAppStatusAC} from '../../app/app-reducer'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils'
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
@@ -82,7 +82,7 @@ const slice = createSlice({
             state[action.payload.todolistId] = action.payload.tasks
         })
         builder.addCase(removeTaskTC.fulfilled, (state, action) => {
-            state[action.payload.todolistId] = state[action.payload.todolistId].filter(t => t.id != action.payload.taskId)
+            state[action.payload.todolistId] = state[action.payload.todolistId].filter(t => t.id !== action.payload.taskId)
         })
         builder.addCase(addTaskTC.fulfilled, (state, action) => {
             action.payload?.task && state[action.payload.task.todoListId].unshift(action.payload.task)
@@ -98,7 +98,7 @@ export const {
 } = slice.actions
 
 export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) =>
-    (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    (dispatch: Dispatch, getState: () => RootState) => {
         const state = getState()
         const task = state.tasks[todolistId].find(t => t.id === taskId)
         if (!task) {

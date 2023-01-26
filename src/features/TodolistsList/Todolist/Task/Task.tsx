@@ -1,8 +1,8 @@
+import {Checkbox, IconButton} from '@mui/material'
 import React, {ChangeEvent, useCallback} from 'react'
-import {Checkbox, IconButton} from '@material-ui/core'
-import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan'
-import {Delete} from '@material-ui/icons'
 import {TaskStatuses, TaskType} from '../../../../api/todolists-api'
+import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type TaskPropsType = {
     task: TaskType
@@ -32,7 +32,7 @@ export const Task = React.memo((props: TaskPropsType) => {
 
         <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
         <IconButton onClick={onClickHandler}>
-            <Delete/>
+            <DeleteIcon/>
         </IconButton>
     </div>
 })
